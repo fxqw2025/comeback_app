@@ -1,0 +1,23 @@
+{
+  "appId": "com.comeback.app",
+  "appName": "Comeback",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https",
+    "cleartext": false
+  },
+  "android": {
+    "allowMixedContent": false,
+    "backgroundColor": "#0a0a12",
+    "webContentsDebuggingEnabled": false,
+    "minWebViewVersion": 60
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0,
+      "backgroundColor": "#0a0a12",
+      "showSpinner": false,
+      "launchAutoHide": true
+    }
+  }
+}

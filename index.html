@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" id="html-root">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#0a0a12" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Comeback" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <title>Comeback</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ═══════════════════════════
+     SPLASH SCREEN
+═══════════════════════════ -->
+<div id="splash-screen" class="splash-screen">
+  <div class="splash-logo">
+    <div class="splash-icon">
+      <img src="icons/icon-192.png" alt="Comeback" />
+    </div>
+    <h1 class="splash-title">Comeback</h1>
+    <p class="splash-sub">Unlock your language with Comeback</p>
+  </div>
+  <div class="splash-loader">
+    <div class="loader-bar"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════
+     MAIN APP
+═══════════════════════════ -->
+<div id="app" class="app hidden">
+
+  <!-- TOP HEADER -->
+  <header class="app-header" id="app-header">
+    <div class="header-left">
+      <div class="header-logo">C</div>
+      <div class="header-titles">
+        <h1 id="page-title">Study</h1>
+        <span id="page-subtitle">Leitner Review</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="stats-chip">
+        <span id="stat-total">0</span>
+        <span class="stat-label"> cards</span>
+      </div>
+      <button class="icon-btn" id="btn-search-toggle" aria-label="Search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- GLOBAL SEARCH -->
+  <div class="global-search-bar" id="global-search-bar">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;flex-shrink:0;color:#888"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <input type="search" id="global-search-input" placeholder="Search words…" autocomplete="off" />
+    <button class="icon-btn" id="btn-search-close" aria-label="Close search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+
+  <!-- ── PAGE: STUDY ── -->
+  <section id="page-study" class="page active">
+
+    <div class="leitner-boxes" id="leitner-boxes">
+      <div class="leitner-box" data-box="1"><span class="box-num">Box 1</span><span class="box-count" id="box-count-1">0</span><span class="box-label" id="box-lbl-1">Daily</span></div>
+      <div class="leitner-box" data-box="2"><span class="box-num">Box 2</span><span class="box-count" id="box-count-2">0</span><span class="box-label" id="box-lbl-2">2-Day</span></div>
+      <div class="leitner-box" data-box="3"><span class="box-num">Box 3</span><span class="box-count" id="box-count-3">0</span><span class="box-label" id="box-lbl-3">Weekly</span></div>
+      <div class="leitner-box" data-box="4"><span class="box-num">Box 4</span><span class="box-count" id="box-count-4">0</span><span class="box-label" id="box-lbl-4">2-Week</span></div>
+      <div class="leitner-box" data-box="5"><span class="box-num">Box 5</span><span class="box-count" id="box-count-5">0</span><span class="box-label" id="box-lbl-5">Mastered</span></div>
+    </div>
+
+    <div class="study-area" id="study-area">
+
+      <div class="empty-state" id="study-empty" style="display:none">
+        <div class="empty-icon">🎉</div>
+        <h3 id="empty-title">All Caught Up!</h3>
+        <p id="empty-desc">No cards due for review right now. Add new words or come back later.</p>
+        <button class="btn-primary" id="btn-add-from-empty">Add New Word</button>
+      </div>
+
+      <div class="flashcard-container" id="flashcard-container">
+        <div class="session-progress">
+          <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progress-bar-fill" style="width:0%"></div></div>
+          <span id="progress-label">0 / 0</span>
+        </div>
+
+        <div class="flip-card" id="flip-card" role="button" tabindex="0" aria-label="Flashcard">
+          <div class="flip-card-inner" id="flip-card-inner">
+            <!-- FRONT -->
+            <div class="flip-card-front">
+              <div class="card-box-badge" id="card-box-badge">Box 1</div>
+              <div class="card-word-image" id="card-front-image" style="display:none">
+                <img id="card-front-img" src="" alt="" />
+              </div>
+              <div class="card-en-word" id="card-front-word">—</div>
+              <div class="card-phonetic" id="card-front-phonetic"></div>
+              <div class="card-fa-phonetic" id="card-front-fa-phonetic" dir="rtl" lang="fa"></div>
+              <button class="tts-btn" id="tts-btn-front" aria-label="Pronounce">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+              </button>
+              <p class="card-hint" id="card-hint">Tap to reveal meaning</p>
+            </div>
+            <!-- BACK -->
+            <div class="flip-card-back">
+              <div class="card-fa-meaning" id="card-back-meaning" dir="rtl" lang="fa">—</div>
+              <div class="card-en-sentence" id="card-back-sentence"></div>
+              <div class="card-notes-preview" id="card-back-notes"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="study-actions" id="study-actions" style="display:none">
+          <button class="btn-forgot" id="btn-forgot">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"/></svg>
+            <span id="lbl-forgot">Forgot</span>
+          </button>
+          <button class="btn-flip-back" id="btn-flip-back" aria-label="Flip back">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4-4.64 4.36A9 9 0 0 1 3.51 15"/></svg>
+          </button>
+          <button class="btn-knew" id="btn-knew">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <span id="lbl-knew">Knew it!</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PAGE: DICTIONARY ── -->
+  <section id="page-dictionary" class="page">
+    <div class="dict-search-wrap">
+      <div class="dict-search-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="dict-search-icon"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="search" id="dict-search" placeholder="Search vocabulary…" autocomplete="off" />
+        <button class="dict-clear-btn" id="dict-clear-btn" style="display:none" aria-label="Clear search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <select id="dict-sort" class="dict-sort-select">
+        <option value="newest">Newest</option>
+        <option value="oldest">Oldest</option>
+        <option value="az">A–Z</option>
+        <option value="za">Z–A</option>
+        <option value="box">By Box</option>
+      </select>
+    </div>
+    <div class="dict-stats-row">
+      <span id="dict-count-label">0 words</span>
+      <span id="dict-filter-label"></span>
+    </div>
+    <div class="word-list" id="word-list" role="list"></div>
+    <div class="empty-state" id="dict-empty" style="display:none">
+      <div class="empty-icon">📖</div>
+      <h3 id="dict-empty-title">Your Dictionary is Empty</h3>
+      <p id="dict-empty-desc">Start by adding your first English word below.</p>
+      <button class="btn-primary" id="btn-add-from-dict">Add First Word</button>
+    </div>
+  </section>
+
+  <!-- ── PAGE: ADD / EDIT ── -->
+  <section id="page-add" class="page">
+    <div class="form-container">
+      <div class="form-header">
+        <h2 id="form-title">Add New Word</h2>
+        <p id="form-subtitle">Fill in the details below</p>
+      </div>
+      <div class="glass-form">
+
+        <div class="form-group">
+          <label class="form-label" for="input-en" id="lbl-en">English Word *</label>
+          <div class="input-wrap">
+            <input type="text" id="input-en" class="form-input" placeholder="e.g. Ephemeral" autocomplete="off" />
+            <button class="input-action-btn" id="form-tts-btn" type="button" aria-label="Preview pronunciation">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+            </button>
+          </div>
+          <div class="auto-status" id="auto-status" style="display:none">
+            <span id="auto-status-text">🔍 Fetching phonetics…</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="input-fa" id="lbl-fa">Persian Meaning *</label>
+          <input type="text" id="input-fa" class="form-input fa-input" placeholder="مثال: زودگذر" dir="rtl" lang="fa" autocomplete="off" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="input-phonetic" id="lbl-phonetic">Pronunciation / IPA</label>
+          <div class="input-wrap">
+            <input type="text" id="input-phonetic" class="form-input" placeholder="e.g. /ɪˈfem.ər.əl/" autocomplete="off" />
+            <span class="auto-badge" id="phonetic-auto-badge" style="display:none">auto</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="input-fa-phonetic" id="lbl-fa-phonetic">Persian Phonetics (تلفظ فارسی)</label>
+          <div class="input-wrap">
+            <input type="text" id="input-fa-phonetic" class="form-input fa-input" placeholder="مثال: اِفِمِرال" dir="rtl" lang="fa" autocomplete="off" />
+            <span class="auto-badge" id="fa-phonetic-auto-badge" style="display:none">auto</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" id="lbl-sentence" for="input-sentence">Example Sentence</label>
+          <input type="text" id="input-sentence" class="form-input" placeholder="e.g. Fame is ephemeral." autocomplete="off" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" id="lbl-notes" for="input-notes">Notes (optional)</label>
+          <textarea id="input-notes" class="form-input form-textarea" placeholder="Grammar tips, usage examples, memory tricks…" rows="3"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" id="lbl-image">Word Image (optional)</label>
+          <div class="image-upload-wrap">
+            <div class="image-preview-box" id="image-preview-box" style="display:none">
+              <img id="image-preview" src="" alt="Word image" />
+              <button class="remove-image-btn" id="remove-image-btn" type="button" aria-label="Remove image">✕</button>
+            </div>
+            <button class="btn-secondary" id="btn-upload-image" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              <span id="lbl-upload">Upload Image</span>
+            </button>
+            <input type="file" id="image-file-input" accept="image/*" style="display:none" />
+          </div>
+        </div>
+
+        <div class="form-timestamps" id="form-timestamps" style="display:none">
+          <span>📅 <span id="lbl-created">Created: </span><strong id="ts-created">—</strong></span>
+          <span>✏️ <span id="lbl-edited">Last edited: </span><strong id="ts-edited">—</strong></span>
+        </div>
+
+        <input type="hidden" id="edit-id" value="" />
+        <input type="hidden" id="edit-image" value="" />
+
+        <div class="form-actions">
+          <button class="btn-ghost" id="btn-cancel-edit" type="button" style="display:none">Cancel Edit</button>
+          <button class="btn-primary btn-full" id="btn-save-word" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:18px;height:18px"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+            <span id="btn-save-label">Save Word</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PAGE: SETTINGS ── -->
+  <section id="page-settings" class="page">
+    <div class="settings-container">
+
+      <div class="settings-hero">
+        <div class="settings-logo"><img src="icons/icon-192.png" alt="Comeback" /></div>
+        <h2>Comeback</h2>
+        <p id="settings-slogan">Unlock your language with Comeback</p>
+        <div class="version-badge">v3.0.0</div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-value" id="s-total">0</div><div class="stat-key" id="s-key-total">Total</div></div>
+        <div class="stat-card"><div class="stat-value" id="s-mastered">0</div><div class="stat-key" id="s-key-mastered">Mastered</div></div>
+        <div class="stat-card"><div class="stat-value" id="s-due">0</div><div class="stat-key" id="s-key-due">Due</div></div>
+        <div class="stat-card"><div class="stat-value" id="s-streak">0</div><div class="stat-key" id="s-key-streak">Streak</div></div>
+      </div>
+
+      <!-- Language -->
+      <div class="settings-section">
+        <h3 class="settings-section-title" id="lbl-lang-settings">Language Settings</h3>
+        <div class="settings-card">
+          <div class="setting-row">
+            <div class="setting-info">
+              <span class="setting-label" id="lbl-app-lang">App Language</span>
+              <span class="setting-desc" id="lbl-app-lang-desc">Choose UI language / زبان برنامه</span>
+            </div>
+            <div class="setting-control">
+              <select id="app-language-select" class="settings-select">
+                <option value="en">English</option>
+                <option value="fa">فارسی</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Speech -->
+      <div class="settings-section">
+        <h3 class="settings-section-title" id="lbl-speech-settings">Speech Settings</h3>
+        <div class="settings-card">
+          <div class="setting-row">
+            <div class="setting-info">
+              <span class="setting-label" id="lbl-speech-rate">Speech Rate</span>
+              <span class="setting-desc" id="lbl-speech-rate-desc">How fast words are spoken</span>
+            </div>
+            <div class="setting-control">
+              <input type="range" id="tts-rate" min="0.5" max="2" step="0.1" value="0.9" class="range-slider" />
+              <span id="tts-rate-val" class="range-val">0.9×</span>
+            </div>
+          </div>
+          <div class="setting-row">
+            <div class="setting-info">
+              <span class="setting-label" id="lbl-voice">Voice</span>
+              <span class="setting-desc" id="lbl-voice-desc">Select English TTS voice</span>
+            </div>
+            <div class="setting-control">
+              <select id="tts-voice" class="settings-select"><option value="">Default</option></select>
+            </div>
+          </div>
+          <div class="setting-row">
+            <button class="btn-secondary" id="btn-test-tts">
+              <svg viewBox="0 0 24 24" fill="currentColor" style="width:16px;height:16px;flex-shrink:0"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+              <span id="lbl-test-voice">Test Voice</span>
+            </button>
+          </div>
+          <div class="setting-row">
+            <div class="setting-info">
+              <span class="setting-label" id="lbl-sfx">Button Sounds</span>
+              <span class="setting-desc" id="lbl-sfx-desc">Sound effects for UI buttons</span>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="sfx-toggle" checked />
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Backup -->
+      <div class="settings-section">
+        <h3 class="settings-section-title" id="lbl-backup-section">Backup & Restore</h3>
+        <div class="settings-card">
+          <div class="setting-row">
+            <div class="setting-info">
+              <span class="setting-label" id="lbl-auto-backup">Auto Backup</span>
+              <span class="setting-desc" id="lbl-auto-backup-desc">Backup after each save</span>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="auto-backup-toggle" checked />
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="setting-row">
+            <div class="setting-info">
+              <span class="setting-label" id="lbl-last-backup">Last Backup</span>
+              <span class="setting-desc" id="last-backup-time">Never backed up</span>
+            </div>
+          </div>
+          <div class="setting-row">
+            <div class="setting-info">
+              <span class="setting-label" id="lbl-manual-backup">Manual Backup</span>
+            </div>
+            <button class="btn-secondary" id="btn-backup">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;flex-shrink:0"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span id="lbl-download-backup">Download</span>
+            </button>
+          </div>
+          <div class="setting-row">
+            <div class="setting-info">
+              <span class="setting-label" id="lbl-restore">Restore from Backup</span>
+            </div>
+            <button class="btn-secondary" id="btn-restore-trigger">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;flex-shrink:0"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <span id="lbl-restore-file">Restore File</span>
+            </button>
+            <input type="file" id="restore-file-input" accept=".json" style="display:none" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Data -->
+      <div class="settings-section">
+        <h3 class="settings-section-title" id="lbl-data-section">Data Management</h3>
+        <div class="settings-card">
+          <div class="setting-row">
+            <div class="setting-info">
+              <span class="setting-label" id="lbl-export">Export Vocabulary</span>
+              <span class="setting-desc" id="lbl-export-desc">Download all words as JSON</span>
+            </div>
+            <button class="btn-secondary" id="btn-export">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;flex-shrink:0"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span id="lbl-export-json">Export JSON</span>
+            </button>
+          </div>
+          <div class="setting-row">
+            <div class="setting-info">
+              <span class="setting-label" id="lbl-import">Import Vocabulary</span>
+              <span class="setting-desc" id="lbl-import-desc">Import from JSON backup</span>
+            </div>
+            <button class="btn-secondary" id="btn-import-trigger">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;flex-shrink:0"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <span id="lbl-import-json">Import JSON</span>
+            </button>
+            <input type="file" id="import-file-input" accept=".json" style="display:none" />
+          </div>
+          <div class="setting-row danger-zone">
+            <div class="setting-info">
+              <span class="setting-label" id="lbl-clear-all">Clear All Data</span>
+              <span class="setting-desc danger-text" id="lbl-clear-desc">Permanently delete everything</span>
+            </div>
+            <button class="btn-danger" id="btn-clear-all">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;flex-shrink:0"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+              <span id="lbl-clear-btn">Clear All</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- About -->
+      <div class="settings-section">
+        <h3 class="settings-section-title" id="lbl-about">About</h3>
+        <div class="settings-card about-card">
+          <p id="about-desc">Comeback is a fully offline vocabulary app for building your English-Persian vocabulary using the Leitner spaced repetition system.</p>
+          <div class="about-tags">
+            <span class="about-tag">Offline First</span>
+            <span class="about-tag">Leitner SRS</span>
+            <span class="about-tag">TTS</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── BOTTOM NAV ── -->
+  <nav class="bottom-nav" id="bottom-nav">
+    <button class="nav-btn active" id="nav-study" data-page="study">
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:22px;height:22px"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        <div class="nav-active-dot"></div>
+      </div>
+      <span id="nav-lbl-study">Study</span>
+    </button>
+    <button class="nav-btn" id="nav-dictionary" data-page="dictionary">
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:22px;height:22px"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        <div class="nav-active-dot"></div>
+      </div>
+      <span id="nav-lbl-dict">Dictionary</span>
+    </button>
+    <button class="nav-btn nav-add-btn" id="nav-add" data-page="add">
+      <div class="nav-add-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:24px;height:24px"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </div>
+      <span id="nav-lbl-add" style="color:var(--text-secondary)">Add New</span>
+    </button>
+    <button class="nav-btn" id="nav-settings" data-page="settings">
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:22px;height:22px"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <div class="nav-active-dot"></div>
+      </div>
+      <span id="nav-lbl-settings">Settings</span>
+    </button>
+  </nav>
+
+</div><!-- /#app -->
+
+<!-- ═══════════════════════════
+     WORD DETAIL MODAL
+═══════════════════════════ -->
+<div class="modal-overlay" id="modal-word-detail">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-word-image" id="md-image-wrap" style="display:none">
+      <img id="md-image" src="" alt="" />
+    </div>
+    <div class="modal-header">
+      <div class="modal-title-wrap">
+        <h2 class="modal-en-word" id="md-en-word">—</h2>
+        <span class="modal-phonetic" id="md-phonetic"></span>
+        <span class="modal-fa-phonetic" id="md-fa-phonetic" dir="rtl" lang="fa"></span>
+      </div>
+      <button class="tts-btn-modal" id="md-tts-btn" aria-label="Play audio">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+      </button>
+    </div>
+    <div class="modal-fa-meaning" id="md-fa-meaning" dir="rtl" lang="fa">—</div>
+    <div class="modal-box-badge" id="md-box-badge">Box 1</div>
+    <div class="modal-section" id="md-sentence-section" style="display:none">
+      <h4 class="modal-section-title" id="md-lbl-sentence">Example Sentence</h4>
+      <p class="modal-sentence" id="md-sentence"></p>
+    </div>
+    <div class="modal-section" id="md-notes-section" style="display:none">
+      <h4 class="modal-section-title" id="md-lbl-notes">Notes</h4>
+      <div class="modal-notes" id="md-notes"></div>
+    </div>
+    <div class="modal-timestamps" id="md-timestamps">
+      <span id="md-ts-created"></span>
+      <span id="md-ts-edited"></span>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-secondary" id="md-btn-edit">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;flex-shrink:0"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        <span id="md-lbl-edit">Edit</span>
+      </button>
+      <button class="btn-danger" id="md-btn-delete">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;flex-shrink:0"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+        <span id="md-lbl-delete">Delete</span>
+      </button>
+      <button class="btn-ghost" id="md-btn-close"><span id="md-lbl-close">Close</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRM MODAL -->
+<div class="modal-overlay" id="modal-confirm">
+  <div class="modal-sheet modal-small">
+    <div class="modal-handle"></div>
+    <div class="confirm-icon">⚠️</div>
+    <h3 class="confirm-title" id="confirm-title">Confirm</h3>
+    <p class="confirm-body" id="confirm-body">Are you sure?</p>
+    <div class="modal-actions" style="justify-content:center">
+      <button class="btn-ghost" id="confirm-cancel">Cancel</button>
+      <button class="btn-danger" id="confirm-ok">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast" role="alert"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
